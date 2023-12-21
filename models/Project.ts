@@ -1,5 +1,3 @@
-import { TFile } from 'obsidian';
-
 export interface Project {
 	notesPath: string;
 	name: string;
@@ -11,7 +9,7 @@ export interface Project {
 }
 
 export interface HydratedProject extends Project {
-	notes: TFile[];
+	notes: Note[];
 	properties: ProjectProperty[];
 }
 
@@ -27,6 +25,9 @@ export interface Note {
 	updated: Date;
 	statusTag?: StatusTag;
 	properties: ProjectPropertyValue[];
+	readonly updateProperties: (properties: ProjectPropertyValue[]) => Promise<Note>;
+	readonly getPropertyValue: <T>(propertyName: string) => T | undefined;
+
 }
 
 export interface ProjectProperty {
@@ -35,7 +36,7 @@ export interface ProjectProperty {
 }
 
 export interface ProjectPropertyValue extends ProjectProperty {
-	value: ProjectProperty['type'];
+	value: string | number | boolean | Date | object | Array<string | number | boolean | Date | object>;
 }
 
 export type ObsidianPropertyTypes = "text" | "list" | "number" | "checkbox" | "date" | "datetime";
